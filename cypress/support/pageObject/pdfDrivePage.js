@@ -1,14 +1,19 @@
 class PDFDrivePage {
+  #visitUrl = "https://www.pdfdrive.com/";
+  #bookSearchInputSelector = "#q";
+  #searchFormSelector = "form#search-form";
+  #searchButtonSelector = 'button[type="submit"]';
+
   visit() {
-    cy.visit("https://www.pdfdrive.com/");
+    cy.visit(this.#visitUrl);
   }
 
   get bookSearchInput() {
-    return cy.get("#q");
+    return cy.get(this.#bookSearchInputSelector);
   }
 
   get searchButton() {
-    return cy.get('form#search-form button[type="submit"]');
+    return cy.get(this.#searchFormSelector).find(this.#searchButtonSelector);
   }
 
   enterSearchQuery(query) {

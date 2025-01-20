@@ -20,7 +20,7 @@ describe("PDF Drive Page Tests", () => {
   });
 
   it("Should apply filters on the search results page", () => {
-    cy.url().should("eq", "https://www.pdfdrive.com/the-hobbit-books.html");
+    detailPage.assertUrl("https://www.pdfdrive.com/the-hobbit-books.html");
     searchedPage.applyFilters({
       pagination: "1-24",
       year: "After 2010",

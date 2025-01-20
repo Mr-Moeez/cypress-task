@@ -1,15 +1,20 @@
 class TheHobbitDetailPage {
-  
+  #visitUrl = "https://www.pdfdrive.com/the-hobbit-e18760817.html";
+  #bookTitleSelector = ".ebook-title";
+  #previewButtonSelector = "#previewButtonMain";
+  #pagesSelector = "span"
+  #pagesTextKeyword = "Pages";
+
   visit() {
-    cy.visit("https://www.pdfdrive.com/the-hobbit-e18760817.html");
+    cy.visit(this.#visitUrl);
   }
-  
+
   assertUrl(expectedUrl) {
     cy.url().should("eq", expectedUrl);
   }
 
   get bookTitle() {
-    return cy.get(".ebook-title");
+    return cy.get(this.#bookTitleSelector);
   }
 
   assertBookTitle(expectedTitle) {
@@ -20,7 +25,7 @@ class TheHobbitDetailPage {
   }
 
   get previewButton() {
-    return cy.get("#previewButtonMain");
+    return cy.get(this.#previewButtonSelector);
   }
 
   clickPreviewButton() {
@@ -28,10 +33,13 @@ class TheHobbitDetailPage {
   }
 
   get pagesLength() {
-    return cy.contains("span", "24 Pages").should("exist");
+    return cy
+      .get(this.#pagesSelector)
+      .contains(this.#pagesTextKeyword)
+      .should("exist");
   }
 
-  assertPagesLength(length){
+  assertPagesLength(length) {
     this.pagesLength.should("contain.text", `${length} Pages`);
   }
 }

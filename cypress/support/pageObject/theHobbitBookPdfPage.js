@@ -1,14 +1,19 @@
 class TheHobbitBookPdfPage {
+  #visitUrl = "https://www.pdfdrive.com/the-hobbit-d18760817.html";
+  #progressBarSelector = "div.progress-bar";
+  #goToPdfButtonSelector = "a.btn.btn-success.btn-responsive";
+  #downloadFilePath = "cypress/downloads/TheHobbit.pdf";
+
+  visit() {
+    cy.visit(this.#visitUrl);
+  }
+
   get progressBar() {
-    return cy.get("div.progress-bar");
+    return cy.get(this.#progressBarSelector);
   }
 
   get goToPdfButton() {
-    return cy.get("a.btn.btn-success.btn-responsive");
-  }
-
-  visit() {
-    cy.visit("https://www.pdfdrive.com/the-hobbit-d18760817.html");
+    return cy.get(this.#goToPdfButtonSelector);
   }
 
   waitForProgressBar() {
@@ -47,18 +52,13 @@ class TheHobbitBookPdfPage {
           encoding: "binary",
         }).then((response) => {
           expect(response.status).to.eq(200);
-          cy.writeFile(
-            "cypress/downloads/TheHobbit.pdf",
-            response.body,
-            "binary"
-          );
+          cy.writeFile(this.#downloadFilePath, response.body, "binary");
         });
       });
   }
 
   assertPdfExistsInDownloads() {
-    const filePath = "cypress/downloads/TheHobbit.pdf";
-    cy.readFile(filePath, "binary")
+    cy.readFile(this.#downloadFilePath, "binary")
       .should("exist")
       .and((content) => {
         expect(content).to.be.ok;

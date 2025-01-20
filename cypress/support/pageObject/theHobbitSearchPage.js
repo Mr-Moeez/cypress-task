@@ -1,54 +1,76 @@
 class TheHobbitSearchPage {
+  #exactMatchCheckboxSelector = 'input[type="checkbox"]#ftcb';
+  #paginationDropdownTriggerSelector = ".select2-selection--single";
+  #paginationOptionTag = "li";
+  #yearDropdownTriggerText = "Pub. Year";
+  #yearOptionTag = "li";
+  #languageDropdownTriggerText = "Any Language";
+  #languageOptionTag = "li";
+  #theHobbitBookTitleTag = "h2";
+  #theHobbitBookTitleText = "The Hobbit";
+
   get exactMatchCheckbox() {
-    return cy.get('input[type="checkbox"]#ftcb');
+    return cy.get(this.#exactMatchCheckboxSelector);
   }
 
   checkExactMatchCheckbox() {
-    this.exactMatchCheckbox.should("exist").should("be.visible").check();
+    this.exactMatchCheckbox.should("exist").and("be.visible").check();
   }
 
   get paginationDropdownTrigger() {
-    return cy.get(".select2-selection--single").first();
+    return cy.get(this.#paginationDropdownTriggerSelector).first();
   }
 
   clickPaginationDropdownTrigger() {
-    this.paginationDropdownTrigger.should("exist").should("be.visible").click();
+    this.paginationDropdownTrigger.should("exist").and("be.visible").click();
   }
 
   selectPaginationOption(option) {
-    cy.contains("li", option).should("exist").should("be.visible").click();
+    cy.contains(this.#paginationOptionTag, option)
+      .should("exist")
+      .and("be.visible")
+      .click();
   }
 
   get yearDropdownTrigger() {
-    return cy.contains("span", "Pub. Year");
+    return cy.contains("span", this.#yearDropdownTriggerText);
   }
 
   openYearDropdown() {
-    this.yearDropdownTrigger.should("exist").should("be.visible").click();
+    this.yearDropdownTrigger.should("exist").and("be.visible").click();
   }
 
   selectYear(option = "After 2010") {
-    cy.contains("li", option).should("exist").should("be.visible").click();
+    cy.contains(this.#yearOptionTag, option)
+      .should("exist")
+      .and("be.visible")
+      .click();
   }
 
   get languageDropdownTrigger() {
-    return cy.contains("span", "Any Language");
+    return cy.contains("span", this.#languageDropdownTriggerText);
   }
 
   openLanguageDropdown() {
-    this.languageDropdownTrigger.should("exist").should("be.visible").click();
+    this.languageDropdownTrigger.should("exist").and("be.visible").click();
   }
 
   selectLanguage(language = "English") {
-    cy.contains("li", language).should("exist").should("be.visible").click();
+    cy.contains(this.#languageOptionTag, language)
+      .should("exist")
+      .and("be.visible")
+      .click();
   }
 
   get theHobbitBook() {
-    return cy.contains("h2", "The Hobbit");
+    return cy.contains(
+      this.#theHobbitBookTitleTag,
+      this.#theHobbitBookTitleText
+    );
   }
 
   selectTheHobbitBook() {
-    this.theHobbitBook.should("exist").should("be.visible").click();
+    this.theHobbitBook.should("exist").and("be.visible").click();
   }
 
   applyFilters({
