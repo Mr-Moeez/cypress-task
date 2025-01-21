@@ -1,28 +1,3 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import "cypress-iframe";
 import "cypress-wait-until";
 
@@ -38,4 +13,32 @@ Cypress.Commands.add("restoreLocalStorage", () => {
   Object.keys(LOCAL_STORAGE_MEMORY).forEach((key) => {
     localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
   });
+});
+
+beforeEach(() => {
+  cy.intercept(
+    { url: /.*(adservice|doubleclick|googlesyndication|adnxs)/ },
+    {
+      statusCode: 204,
+      body: "",
+    }
+  );
+});
+
+Cypress.on("window:load", (win) => {
+  const removeAds = () => {
+    const selectors = [
+      '[id^="ad-"]',
+      '[class*=" ad-"]',
+      ".ad",
+      '[class*="advert"]',
+    ];
+    const adElements = win.document.querySelectorAll(selectors.join(", "));
+    adElements.forEach((adEl) => adEl.remove());
+  };
+
+  removeAds();
+
+  const observer = new MutationObserver(removeAds);
+  observer.observe(win.document.body, { childList: true, subtree: true });
 });
